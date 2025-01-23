@@ -7,9 +7,14 @@ const airplaneWidth = 50;
 let obstacles = [];
 let isGameOver = false;
 let startTime = Date.now();
+let winObstacle = 0;
 
 function setupAirplane() {
     document.addEventListener('keydown', handleAirplaneMovement);
+}
+
+function updateAirplanePosition() {
+    airplane.style.left = `${airplaneX}px`;
 }
 
 function handleAirplaneMovement(event) {
@@ -19,10 +24,6 @@ function handleAirplaneMovement(event) {
         airplaneX += 50;
     }
     updateAirplanePosition();
-}
-
-function updateAirplanePosition() {
-    airplane.style.left = `${airplaneX}px`;
 }
 
 function createObstacle() {
@@ -35,7 +36,7 @@ function createObstacle() {
 }
 
 function moveObstacles() {
-    for (let i = 0; i < obstacles.length; i++) {
+    for (let i = 0; i < obstacles.length; ++i) {
         let obstacle = obstacles[i];
         let obstacleY = parseFloat(obstacle.style.top);
         obstacleY += 5; 
@@ -49,6 +50,7 @@ function resetObstacles() {
         if (parseFloat(obstacle.style.top) > gameContainer.offsetHeight) {
             gameContainer.removeChild(obstacle);
             obstacles.splice(i, 1);
+            ++winObstacle;
             --i;
         }
     }
@@ -56,7 +58,7 @@ function resetObstacles() {
 
 function checkCollision() {
     const airplaneRect = airplane.getBoundingClientRect();
-    for (let i = 0; i < obstacles.length; i++) {
+    for (let i = 0; i < obstacles.length; ++i) {
         const obstacleRect = obstacles[i].getBoundingClientRect();
         if (airplaneRect.left < obstacleRect.right &&
             airplaneRect.right > obstacleRect.left &&
@@ -70,7 +72,7 @@ function checkCollision() {
 
 function endGame() {
     const finalTime = Math.floor((Date.now() - startTime) / 1000);
-    scoreButton.textContent = 'Game Over! Your score is ' + finalTime;
+    scoreButton.textContent = 'Game Over! Your score is ' + winObstacle;
     scoreButton.style.display = 'block';
 }
 
