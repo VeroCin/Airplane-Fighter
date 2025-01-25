@@ -26,6 +26,15 @@
     left: 0px;  
 }
 
+.projectile{
+    width: 50px;
+    height: 50px;
+    background-color: yellow;
+    position: absolute;
+    top: 0px;
+    left: 0px;  
+}
+
 #score-button {
     display: none;
     margin: 20px auto;
