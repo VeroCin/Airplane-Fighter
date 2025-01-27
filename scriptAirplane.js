@@ -105,28 +105,33 @@ function checkProjectileCollision(projectile, projectileIndex) {
     for (let i = 0; i < obstacles.length; ++i) {
         const obstacle = obstacles[i];
         const obstacleRect = obstacle.getBoundingClientRect();
-        if (projectileRect.left < obstacleRect.right &&
-            projectileRect.right > obstacleRect.left &&
-            projectileRect.top < obstacleRect.bottom &&
-            projectileRect.bottom > obstacleRect.top) {
-            gameContainer.removeChild(obstacle);
-            obstacles.splice(i, 1);
-            gameContainer.removeChild(projectile);
-            projectiles.splice(projectileIndex, 1);
-            ++score;
-            return;
+        if (isCollision(projectileRect, obstacleRect)) {
+            handleProjectileObstacleCollision(i, projectileIndex);
+            return; 
         }
     }
+}
+
+function isCollision(rect1, rect2) {
+    return rect1.left < rect2.right &&
+           rect1.right > rect2.left &&
+           rect1.top < rect2.bottom &&
+           rect1.bottom > rect2.top;
+}
+
+function handleProjectileObstacleCollision(obstacleIndex, projectileIndex) {
+    gameContainer.removeChild(obstacles[obstacleIndex]);
+    obstacles.splice(obstacleIndex, 1);
+    gameContainer.removeChild(projectiles[projectileIndex]);
+    projectiles.splice(projectileIndex, 1); 
+    ++score;
 }
 
 function checkCollision() {
     const airplaneRect = airplane.element.getBoundingClientRect();
     for (let i = 0; i < obstacles.length; ++i) {
         const obstacleRect = obstacles[i].getBoundingClientRect();
-        if (airplaneRect.left < obstacleRect.right &&
-            airplaneRect.right > obstacleRect.left &&
-            airplaneRect.top < obstacleRect.bottom &&
-            airplaneRect.bottom > obstacleRect.top) {
+        if (isCollision(airplaneRect, obstacleRect)) {
             isGameOver = true;
             break;
         }
@@ -139,4 +144,3 @@ function endGame() {
 }
 
 initializeGame();
-
