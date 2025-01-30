@@ -1,8 +1,8 @@
 const gameContainer = document.getElementById('game-container');
 const scoreButton = document.getElementById('score-button');
+
 const airplaneWidth = 50;
 const five = 5;
-
 const obstacles = [];
 const projectiles = [];
 let isGameOver = false;
@@ -25,11 +25,9 @@ function gameLoop() {
         endGame();
         return;
     }
-    
     if (Math.random() < 0.02) {
         createObstacle();
     }
-    
     updateObstacles();
     updateProjectiles();
     checkCollision();
